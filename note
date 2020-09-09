@@ -1,0 +1,22 @@
+安装必要的插件，如sass-loader npm install sass-loader sass --save-dev  不是scss!!!! 
+less 可以，scss不可以？？？？
+
+本地仓库同远程仓库关联：
+1.首先得创建一个远程项目的仓库
+2.进入本地项目，进行项目初始化 
+  git init
+3.将本地仓库与远程仓库关联
+  git remote add origin https://github.com/xxxx/yyy.git
+  
+在main.js中引入全局css
+
+index.vue
+定位当前所在城市  百度api
+
+grid布局
+
+城市列表按字母排序
+
+为什么8000能请求到数据，8081不行？
+请求封装
+
