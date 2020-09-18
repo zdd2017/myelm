@@ -7,8 +7,17 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/index',
+    },
+    {
+      path: '/index',
       name: 'index',
       component: () => import('@/pages/index')
+    },
+    {
+      path: '/location/:id',
+      name: 'location',
+      component: () => import('@/pages/location/location')
     }
   ]
 })

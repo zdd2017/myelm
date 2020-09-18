@@ -10,14 +10,19 @@
         <div>定位不准确，请在城市列表中选择</div>
       </div>
       <div class="current-city">
-        <div class="name">{{locationCity}}</div>
-        <div>></div>
+        <div class="name">{{locationCity.name}}</div>
+        <div @click="goToLocation(locationCity.id)">></div>
       </div>
     </div>
     <div class="city-container">
       <div class="title">热门城市</div>
       <div class="city-grid-container">
-        <div class="city-grid-item" v-for="city in hotCities" :key="city.index">{{city}}</div>
+        <div
+          class="city-grid-item"
+          @click="goToLocation(city.id)"
+          v-for="city in hotCities"
+          :key="city.id"
+        >{{city.name}}</div>
       </div>
     </div>
     <div class="city-container" v-for="(value, key, index) in allCities" :key="index">
@@ -26,6 +31,7 @@
         <div
           class="city-grid-item"
           style="color: #666"
+          @click="goToLocation(city.id)"
           v-for="city in value"
           :key="city.index"
         >{{city.name}}</div>
@@ -36,47 +42,42 @@
 
 <script>
 import BMap from "BMap";
-import { fetchAllCities } from "@/service/getData";
+import { fetchCities } from "@/service/getData";
 import pyjs from "js-pinyin";
 
 export default {
   name: "index",
   data() {
     return {
-      locationCity: "正在定位",
-      hotCities: [
-        "上海",
-        "哈尔滨",
-        "南京",
-        "广州",
-        "厦门",
-        "杭州",
-        "天津",
-        "青岛",
-      ],
+      locationCity: {
+        name: "正在定位",
+      },
+      hotCities: [],
       allCities: {},
     };
   },
   mounted() {
     this.getCurrentCity();
     this.getAllCities();
+    this.getHotCities();
   },
   methods: {
     getCurrentCity() {
-      const geolocation = new BMap.Geolocation();
-      geolocation.getCurrentPosition(
-        (position) => {
-          let city = position.address.city; //获取城市信息
-          this.locationCity = city;
-        },
-        function (e) {
+      fetchCities("guess")
+        .then((res) => {
+          this.locationCity = res;
+        })
+        .catch((err) => {
           this.locationCity = "定位失败";
-        },
-        { provider: "baidu" }
-      );
+        });
+    },
+    getHotCities() {
+      fetchCities("hot").then((res) => {
+        this.hotCities = res;
+      });
     },
     getAllCities() {
-      fetchAllCities("group").then((res) => {
+      fetchCities("group").then((res) => {
         let result = {};
         let keys = Object.keys(res);
         keys.sort();
@@ -85,7 +86,13 @@ export default {
           result[k] = res[k];
         }
         this.allCities = result;
-        console.log(this.allCities, "cities");
+        console.log(this.allCities, "city");
+      });
+    },
+    goToLocation(id) {
+      console.log(id, "id");
+      this.$router.push({
+        path: "/location/" + id,
       });
     },
   },
