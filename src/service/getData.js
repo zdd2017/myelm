@@ -29,3 +29,45 @@ export function fetchCurrentCity(id) {
         method: 'get',
     })
 }
+
+// merchant.vue
+// 通过坐标获取城市信息
+export function fetchCityByPosition(poi) {
+    return request({
+        url: '/v2/pois/' + poi,
+        method: 'get',
+    })
+}
+
+// 获取食物类型
+export function fetchFoodTypes(query) {
+    return request({
+        url: '/v2/index_entry',
+        method: 'get',
+        params: {
+            geohash: query.geohash,
+            group_type: query.type,
+            flags: query.flags
+        }
+    })
+}
+
+// 获取商家
+export function fetchMerchants(query) {
+    return request({
+        url: '/shopping/restaurants',
+        method: 'get',
+        params: {
+            latitude: query.latitude,
+            longitude: query.longitude,
+            offset: query.offset,
+            limit: query.limit,
+            extras: query.extras,
+            keyword: query.keyword,
+            restaurant_category_id: query.id,
+            restaurant_category_ids: query.ids,
+            order_by: query.order,
+            delivery_mode: query.mode
+        }
+    })
+}

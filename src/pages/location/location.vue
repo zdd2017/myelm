@@ -103,8 +103,12 @@ export default {
     goToShop(place) {
       this.histories.push(place);
       setStore("placeHistory", this.histories);
-      console.log(this.histories, "history");
-      // this.$route.push()
+      this.$router.push({
+        path: "/merchant",
+        query: {
+          geohash: place.geohash,
+        },
+      });
     },
     goToIndex() {
       this.$router.push("/");

@@ -18,6 +18,11 @@ export default new Router({
       path: '/location/:id',
       name: 'location',
       component: () => import('@/pages/location/location')
+    },
+    {
+      path: '/merchant',
+      name: 'merchant',
+      component: () => import('@/pages/merchant/merchant')
     }
   ]
 })
